@@ -33,6 +33,9 @@ int eac_crypto_verify_signature_ex
 
 { /* eac_crypto_verify_signature_ex */
 
+  EAC_ENCODE_OBJECT digest;
+  int digest_lth;
+  unsigned char digest_raw [EAC_CRYPTO_SHA256_DIGEST_SIZE];
   OB_CRYPTO_CONTEXT_OPEN3 *internal;
   int status;
 
@@ -50,7 +53,13 @@ int eac_crypto_verify_signature_ex
     status = STEAC_BAD_ARG;
     break;
   case EAC_SIG_SHA256:
-    hash the message into message_hash
+    // hash the input message
+
+    status = eac_crypto_digest_init(ctx, &digest);
+    if (status EQUALS ST_OK)
+      status = eac_crypto_digest_update(ctx, &digest, message, msg_lth);
+    if (status EQUALS ST_OK)
+      status = eac_crypto_digest_finish(ctx, &digest, digest_raw, &digest_lth);
     break;
   };
 zzz curve identifier is in one of the key_parameters values.

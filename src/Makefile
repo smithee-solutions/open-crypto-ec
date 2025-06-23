@@ -1,3 +1,7 @@
+LIB_OBJECTS = eac-crypto_open3-ec.o eac-crypto_open3-sha256.o \
+  ECC.o \
+  ../opt/openbadger/lib/sha256.o
+
 CC=clang
 CFLAGS=-c -g -I../include -I/opt/openbadger/include -Wall -Werror
 LINK=clang
@@ -12,8 +16,8 @@ package:	all
 clean:
 	rm -f *.o core *.a
 
-libeac-crypto-open3.a:	eac-crypto_open3.o uECC.o
-	ar r libeac-crypto-open3.a uECC.o
+libeac-crypto-open3.a:	${LIB_OBJECTS}
+	ar r libeac-crypto-open3.a ${LIB_OBJECTS)
 
 eac-crypto_open3.o:	eac-crypto_open3.c
 	${CC} ${CFLAGS} eac-crypto_open3.c
